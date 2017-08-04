@@ -1,28 +1,24 @@
 <?php
-class Sql 
+class Sql
 {
-	protected $table = '';
-	protected $where = '';
-	protected $columns = '';
-	protected $join = '';
+	public $table;
+	protected $where;
+	protected $columns;
+	protected $join;
 	protected $limit = null;
-	protected $order = '';
+	protected $order;
 	protected $params = array();
-	protected $queryType = '';
-    protected $query = '';
-    protected $having ='';
-    protected $group ='';
+    public  $queryType;
+    protected $query;
+    protected $having;
+    protected $group;
     protected $desc = false;
 	protected $dist = false;
-	
-	public function getQuery()
-	{
-		return $this->query;
-	}
+
 
 	public function select()
 	{
-		$this->queryType = 'select';
+        $this->queryType = 'select';
 		return $this;
 	}
 	public function insert()
@@ -86,7 +82,7 @@ class Sql
         $this->having = $having;
         return  $this;
     }
-    
+
     public function setGroup($group)
     {
         $this->group = $group;
@@ -162,7 +158,7 @@ class Sql
                 }
  				break;
             case 'insert':
-                
+
 				$this->query .="insert into ". "{$this->table}";
 
                 if($this->columns)
@@ -182,13 +178,14 @@ class Sql
 				}
 				else
 				{
-					$this->query = "";
+					$this->query = "no where - no delete";
 					break;
 				}
 				if($this->limit)
 				{
-					$this->query .= " limit {$this->limit}";
+					$this->query .= " LIMIT {$this->limit}";
                 }
+
 				break;
 			case 'update':
 				$this->query .= "update {$this->table} set ";
@@ -202,19 +199,21 @@ class Sql
 				{
 					$this->query .= " where {$this->where}";
 				}
+				
 				else
 				{
-					$this->query = "";
+					$this->query = "no where - no update";
 					break;
 				}
 				if($this->limit)
 				{
-					$this->query .=" limit {$this->limit}";
+					$this->query .=" LIMIT {$this->limit}";
                 }
 				break;
 		}
+		
 	}
 
 
-	public function __construct(){}
+   public function __construct(){}
 }
